@@ -3,6 +3,15 @@ import './App.css';
 import {TaskType, Todolist} from "./Todolist";
 import {v1} from "uuid";
 import AddItemForm from "./AddItemForm";
+import IconButton from '@mui/material/IconButton';
+import Grid from '@mui/material/Grid';
+import AppBar from '@mui/material/AppBar';
+import Container from '@mui/material/Container';
+import Paper from '@mui/material/Paper';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import {Menu} from "@mui/icons-material";
+import Button from "@mui/material/Button";
 
 export type FilterValueType = 'all' | 'active' | 'completed'
 export type TodolistsType = {
@@ -102,7 +111,22 @@ function App() {
 
     return (
         <div className="App">
+            <AppBar position="static">
+                <Toolbar >
+                    <IconButton edge="start" color="inherit" aria-label="menu">
+                        <Menu />
+                    </IconButton>
+                    <Typography variant="h6" color="inherit" component="div">
+                        Todolist
+                    </Typography>
+                    <Button color={'inherit'}>Login</Button>
+                </Toolbar>
+            </AppBar>
+            <Container fixed>
+                <Grid container style={{padding:'20px'}}>
             <AddItemForm addItem={addTodolist}/>
+                </Grid>
+                <Grid container spacing={3}>
             {todolists.map((el)=>{
                 let allTodolistTasks = tasks[el.id]
                 let taskForTodolist=allTodolistTasks
@@ -113,7 +137,8 @@ function App() {
                     taskForTodolist = allTodolistTasks.filter(tasks => tasks.isDone)
                 }
                 return(
-
+                    <Grid item>
+                        <Paper style={{padding:'10px'}}>
                     <Todolist key={el.id} title={el.title} todolistId={el.id} tasks={taskForTodolist}
                               removeTask={removeTask} changeFilter={changeFilter} addTask={addTask}
                               changeTaskStatus={changeTaskStatus} filter={el.filter}
@@ -121,8 +146,12 @@ function App() {
                               changeTaskTitle={changeTaskTitle}
                               changeTodolistTitle={changeTodolistTitle}
                     />
+                        </Paper>
+                    </Grid>
                 )
             })}
+                </Grid>
+            </Container>
         </div>
     );
 }
