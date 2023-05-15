@@ -5,7 +5,8 @@ import AddBox from '@mui/icons-material/AddBox';
 type AddItemPropsType ={
     addItem:(title:string)=>void
 }
-const AddItemForm = (props:AddItemPropsType) => {
+const AddItemForm = React.memo((props:AddItemPropsType) => {
+    console.log('addItemForm')
     let [title,setTitle]=useState('')
     const [error,setError]=useState<string|null>(null)
     const addItem=()=>{
@@ -20,7 +21,9 @@ const AddItemForm = (props:AddItemPropsType) => {
         setTitle(e.currentTarget.value)
         }
         const onkeypressHandler=(e:KeyboardEvent<HTMLInputElement>)=>{
+        if(error!==null){
             setError(null)
+        }
             if(e.key==='Enter'){
                 addItem()
             }
@@ -33,6 +36,6 @@ const AddItemForm = (props:AddItemPropsType) => {
             </IconButton>
         </div>
     );
-};
+});
 
 export default AddItemForm;
