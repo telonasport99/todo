@@ -4,7 +4,7 @@ const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     withCredentials: true,
     headers: {
-        'API-KEY': '5fc11a34-7258-4926-8c00-91db4f940cfd'
+        'API-KEY': '88e747f1-600f-4bbb-8fce-7131a724b96d'
     }
 })
 
@@ -32,8 +32,23 @@ export const todolistsAPI = {
         return instance.post<ResponseType<{ item: TaskType }>, AxiosResponse<ResponseType<{ item: TaskType }>>, { title: string }>(`todo-lists/${todolistId}/tasks`, {title});
     },
     updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
-        return instance.put<ResponseType<{ item: TaskType }>, AxiosResponse<ResponseType<{ item: TaskType }>>, UpdateTaskModelType>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
+        return instance.put<ResponseType<{ item: TaskType }>,
+            AxiosResponse<ResponseType<{ item: TaskType }>>, UpdateTaskModelType>
+        (`todo-lists/${todolistId}/tasks/${taskId}`, model);
     }
+}
+export const authAPI = {
+    me(){
+        return instance.get<ResponseType<UserType>>('auth/me')
+    },
+    login(data:LoginType) {
+        return instance.post<ResponseType<{ id:number }>,
+            AxiosResponse<ResponseType<{ id: number }>>, LoginType>('auth/login', data);
+    },
+    logOut() {
+        return instance.delete<ResponseType>('auth/login');
+    },
+
 }
 
 // types
@@ -90,4 +105,14 @@ type GetTasksResponse = {
     error: string | null
     totalCount: number
     items: TaskType[]
+}
+export type LoginType={
+    email:string
+    password:string
+    rememberMe:boolean
+}
+export type UserType={
+    id:number
+    email:string
+    login:string
 }
